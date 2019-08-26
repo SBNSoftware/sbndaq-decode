@@ -1,7 +1,7 @@
 simple_plugin( SBNDTPCDecoder module
   sbndaqMode
-  sbnddaq-datatypes_Overlays 
-  sbnddaq-datatypes_NevisTPC
+  sbndaq-artdaq-core_Overlays_SBND
+  sbndaq-artdaq-core_Overlays_SBND_NevisTPC
   ${LARDATAOBJ}
   lardataobj_RawData
   ${ART_UTILITIES}

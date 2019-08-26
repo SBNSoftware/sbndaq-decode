@@ -14,7 +14,7 @@
 #include "artdaq-core/Data/Fragment.hh"
 #include "canvas/Utilities/InputTag.h"
 
-#include "sbnddaq-datatypes/Overlays/NevisTPCFragment.hh"
+#include "sbndaq-artdaq-core/Overlays/SBND/NevisTPCFragment.hh"
 
 #include "../HeaderData.hh"
 
@@ -45,7 +45,7 @@ public:
   void produce(art::Event & e) override;
 
   // get checksum from a Nevis fragment
-  static uint32_t compute_checksum(sbnddaq::NevisTPCFragment &fragment);
+  static uint32_t compute_checksum(sbndaq::NevisTPCFragment &fragment);
 
 private:
   class Config {
@@ -76,10 +76,10 @@ private:
 
   // Gets the WIRE ID of the channel. This wire id can be then passed
   // to the Lariat geometry.
-  raw::ChannelID_t get_wire_id(const sbnddaq::NevisTPCHeader *header, uint16_t nevis_channel_id);
+  raw::ChannelID_t get_wire_id(const sbndaq::NevisTPCHeader *header, uint16_t nevis_channel_id);
 
   // whether the given nevis readout channel is mapped to a wire
-  bool is_mapped_channel(const sbnddaq::NevisTPCHeader *header, uint16_t nevis_channel_id);
+  bool is_mapped_channel(const sbndaq::NevisTPCHeader *header, uint16_t nevis_channel_id);
 
   // build a HeaderData object from the Nevis Header
   tpcAnalysis::HeaderData Fragment2HeaderData(art::Event &event, const artdaq::Fragment &frag);

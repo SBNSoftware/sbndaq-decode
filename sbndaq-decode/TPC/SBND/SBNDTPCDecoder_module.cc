@@ -28,9 +28,9 @@
 
 #include "lardataobj/RawData/RawDigit.h"
 
-#include "sbnddaq-datatypes/Overlays/NevisTPCFragment.hh"
-#include "sbnddaq-datatypes/NevisTPC/NevisTPCTypes.hh"
-#include "sbnddaq-datatypes/NevisTPC/NevisTPCUtilities.hh"
+#include "sbndaq-artdaq-core/Overlays/SBND/NevisTPCFragment.hh"
+#include "sbndaq-artdaq-core/Overlays/SBND/NevisTPC/NevisTPCTypes.hh"
+#include "sbndaq-artdaq-core/Overlays/SBND/NevisTPC/NevisTPCUtilities.hh"
 
 #include "../HeaderData.hh"
 #include "../../Mode/Mode.hh"
@@ -40,9 +40,9 @@ DEFINE_ART_MODULE(daq::SBNDTPCDecoder)
 // constructs a header data object from a nevis header
 // construct from a nevis header
 tpcAnalysis::HeaderData daq::SBNDTPCDecoder::Fragment2HeaderData(art::Event &event, const artdaq::Fragment &frag) {
-  sbnddaq::NevisTPCFragment fragment(frag);
+  sbndaq::NevisTPCFragment fragment(frag);
 
-  const sbnddaq::NevisTPCHeader *raw_header = fragment.header();
+  const sbndaq::NevisTPCHeader *raw_header = fragment.header();
   tpcAnalysis::HeaderData ret;
 
   ret.crate = raw_header->getFEMID();
@@ -130,12 +130,12 @@ void daq::SBNDTPCDecoder::produce(art::Event & event)
 
 }
 
-bool daq::SBNDTPCDecoder::is_mapped_channel(const sbnddaq::NevisTPCHeader *header, uint16_t nevis_channel_id) {
+bool daq::SBNDTPCDecoder::is_mapped_channel(const sbndaq::NevisTPCHeader *header, uint16_t nevis_channel_id) {
   // TODO: make better
   return true;
 }
 
-raw::ChannelID_t daq::SBNDTPCDecoder::get_wire_id(const sbnddaq::NevisTPCHeader *header, uint16_t nevis_channel_id) {
+raw::ChannelID_t daq::SBNDTPCDecoder::get_wire_id(const sbndaq::NevisTPCHeader *header, uint16_t nevis_channel_id) {
   // TODO: make better
   return (header->getSlot() - _config.min_slot_no) * _config.channel_per_slot + nevis_channel_id;
 }
@@ -145,9 +145,9 @@ void daq::SBNDTPCDecoder::process_fragment(art::Event &event, const artdaq::Frag
   std::unique_ptr<std::vector<tpcAnalysis::HeaderData>> &header_collection) {
 
   // convert fragment to Nevis fragment
-  sbnddaq::NevisTPCFragment fragment(frag);
+  sbndaq::NevisTPCFragment fragment(frag);
 
-  std::unordered_map<uint16_t,sbnddaq::NevisTPC_Data_t> waveform_map;
+  std::unordered_map<uint16_t,sbndaq::NevisTPC_Data_t> waveform_map;
   size_t n_waveforms = fragment.decode_data(waveform_map);
   (void)n_waveforms;
 
@@ -194,19 +194,19 @@ void daq::SBNDTPCDecoder::process_fragment(art::Event &event, const artdaq::Frag
 }
 
 // Computes the checksum, given a nevis tpc header
-// Ideally this would be in sbnddaq-datatypes, but it's not and I can't
+// Ideally this would be in sbndaq-datatypes, but it's not and I can't
 // make changes to it, so put it here for now
 //
 // Also note that this only works for uncompressed data
-uint32_t daq::SBNDTPCDecoder::compute_checksum(sbnddaq::NevisTPCFragment &fragment) {
+uint32_t daq::SBNDTPCDecoder::compute_checksum(sbndaq::NevisTPCFragment &fragment) {
   uint32_t checksum = 0;
 
-  const sbnddaq::NevisTPC_ADC_t* data_ptr = fragment.data();
+  const sbndaq::NevisTPC_ADC_t* data_ptr = fragment.data();
   // RETURN VALUE OF getADCWordCount IS OFF BY 1
   size_t n_words = fragment.header()->getADCWordCount() + 1;
 
   for (size_t word_ind = 0; word_ind < n_words; word_ind++) {
-    const sbnddaq::NevisTPC_ADC_t* word_ptr = data_ptr + word_ind;
+    const sbndaq::NevisTPC_ADC_t* word_ptr = data_ptr + word_ind;
     checksum += *word_ptr;
   }
   // only first 6 bytes of checksum are used
