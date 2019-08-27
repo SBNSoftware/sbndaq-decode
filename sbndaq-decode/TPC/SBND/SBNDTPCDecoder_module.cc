@@ -45,6 +45,7 @@ tpcAnalysis::HeaderData daq::SBNDTPCDecoder::Fragment2HeaderData(art::Event &eve
   const sbndaq::NevisTPCHeader *raw_header = fragment.header();
   tpcAnalysis::HeaderData ret;
 
+
   ret.crate = raw_header->getFEMID();
   ret.slot = raw_header->getSlot();
   ret.event_number = raw_header->getEventNum();
@@ -194,8 +195,6 @@ void daq::SBNDTPCDecoder::process_fragment(art::Event &event, const artdaq::Frag
 }
 
 // Computes the checksum, given a nevis tpc header
-// Ideally this would be in sbndaq-datatypes, but it's not and I can't
-// make changes to it, so put it here for now
 //
 // Also note that this only works for uncompressed data
 uint32_t daq::SBNDTPCDecoder::compute_checksum(sbndaq::NevisTPCFragment &fragment) {
