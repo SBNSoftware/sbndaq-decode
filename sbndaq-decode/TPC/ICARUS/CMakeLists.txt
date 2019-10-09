@@ -7,6 +7,7 @@ simple_plugin( ICARUSTPCDecoder module
   sbndaq-artdaq-core_Overlays_ICARUS 
   ${LARDATAOBJ}
   lardataobj_RawData
+	artdaq-core_Utilities
   ${ART_UTILITIES}
   ${FHICLCPP}
   ${MF_MESSAGELOGGER}
