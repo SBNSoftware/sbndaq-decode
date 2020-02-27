@@ -2,8 +2,8 @@
 
 # The *parent* line must the first non-commented line and defines this product and version
 # The version should be of the form vx_yy_zz (e.g. v1_02_03)
-parent sbndaq_decode v0_04_01
-defaultqual e17:s83
+parent sbndaq_decode v0_05_00
+defaultqual e19:s94
 
 # These optional lines define the installed directories where headers,
 # libraries, and executables will be found.
@@ -26,23 +26,24 @@ defaultqual e17:s83
 incdir  product_dir include
 libdir  fq_dir      lib
 bindir  fq_dir      bin
-flcdir  product_dir     fcl
+flcdir  product_dir fcl
 
 # With "product  version" table below, we now define depdendencies
 # Add the dependent product and version
 
 product            version
-sbndaq_artdaq_core v0_04_02
-lardataobj         v08_04_00
-nutools            v2_29_02
+sbndaq_artdaq_core v0_05_00
+larsoft            v08_42_01  s94
 cetbuildtools      v7_14_00  - only_for_build
 end_product_list
 
 # We now define allowed qualifiers and the corresponding qualifiers for the depdencies.
 # Make a table by adding columns before "notes".
-qualifier      sbndaq_artdaq_core  lardataobj nutools    notes
-e17:s83:debug  e17:debug:s83       e17:debug  e17:debug  
-e17:s83:prof   e17:prof:s83        e17:prof   e17:prof   
+qualifier          sbndaq_artdaq_core      larsoft           notes
+e19:s94:debug      e19:debug:s94           e19:debug    
+e19:s94:prof       e19:prof:s94            e19:prof     
+e19:s94:py2:debug  e19:debug:s94:py2       e19:debug:py2
+e19:s94:py2:prof   e19:prof:s94:py2        e19:prof:py2  
 end_qualifier_list
 
 # Preserve tabs and formatting in emacs and vi / vim:
