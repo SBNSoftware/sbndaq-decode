@@ -121,7 +121,7 @@ void daq::ICARUSTPCDecoder::produce(art::Event & event)
 
   for (auto const &rawfrag: *daq_handle) {
     //process_fragment(event, rawfrag, product_collection, header_collection);
-process_fragment(event, rawfrag, product_collection);
+    process_fragment(event, rawfrag, product_collection);
   }
 
   event.put(std::move(product_collection));
@@ -147,29 +147,35 @@ void daq::ICARUSTPCDecoder::process_fragment(art::Event &event, const artdaq::Fr
 
   // convert fragment to Nevis fragment
   icarus::PhysCrateFragment fragment(frag);
-	std::cout << " n boards " << fragment.nBoards() << std::endl;
-//int channel_count=0;
-for(size_t i_b=0; i_b < fragment.nBoards(); i_b++){
+  std::cout << " n boards " << fragment.nBoards() << std::endl;
+
+  // This is a placeholder using 0-7 for the 8 minicrates -- when we use the proper fragment IDs
+  //    we will want to change to use a map here from FragmentID to ... something.
+  unsigned int boardFragmentID = (unsigned int) frag.fragmentID();
+
+  //int channel_count=0;
+  for(size_t i_b=0; i_b < fragment.nBoards(); i_b++){
 	//A2795DataBlock const& block_data = *(crate_data.BoardDataBlock(i_b));
 
 
 	for(size_t i_ch=0; i_ch < fragment.nChannelsPerBoard(); ++i_ch){
 
 	  //raw::ChannelID_t channel_num = (i_ch & 0xff ) + (i_b << 8);
-           raw::ChannelID_t channel_num = i_ch+i_b*64;
+          raw::ChannelID_t channel_num = i_ch+i_b*64 + boardFragmentID*576;
 	  raw::RawDigit::ADCvector_t wvfm(fragment.nSamplesPerChannel());
 	  for(size_t i_t=0; i_t < fragment.nSamplesPerChannel(); ++i_t) {
 	    wvfm[i_t] = fragment.adc_val(i_b,i_ch,i_t);
            // if(channel_num==1855) std::cout << " sample " << i_t << " wave " << wvfm[i_t] << std::endl;
-}
-     //   product_collection->emplace_back(channel_count++,fragment.nSamplesPerChannel(),wvfm);
-      product_collection->emplace_back(channel_num,fragment.nSamplesPerChannel(),wvfm);
- //std::cout << " channel " << channel_num << " waveform size " << fragment.nSamplesPerChannel() << std::endl;
+	  }
+	  //   product_collection->emplace_back(channel_count++,fragment.nSamplesPerChannel(),wvfm);
+	  product_collection->emplace_back(channel_num,fragment.nSamplesPerChannel(),wvfm);
+	  //std::cout << " channel " << channel_num << " waveform size " << fragment.nSamplesPerChannel() << std::endl;
 
 	}//loop over channels
 
       }//loop over boards
-      std::cout << "Total number of channels added is " << product_collection->size() << std::endl;
+      
+  std::cout << "Total number of channels added is " << product_collection->size() << std::endl;
 
 
   /*std::unordered_map<uint16_t,sbnddaq::NevisTPC_Data_t> waveform_map;
