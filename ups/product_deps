@@ -33,7 +33,7 @@ flcdir  product_dir fcl
 
 product            version
 sbndaq_artdaq_core v0_07_04
-lardataobj         v09_00_01
+lardataobj         v09_01_01
 cetbuildtools      v7_17_01  - only_for_build
 end_product_list
 
