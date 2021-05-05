@@ -32,14 +32,14 @@ flcdir  product_dir fcl
 # Add the dependent product and version
 
 product            version
-sbndaq_artdaq_core v0_07_04_of0
-sbncode            v09_18_00
+sbndaq_artdaq_core v0_07_04
+lardataobj         v09_00_01
 cetbuildtools      v7_17_01  - only_for_build
 end_product_list
 
 # We now define allowed qualifiers and the corresponding qualifiers for the depdencies.
 # Make a table by adding columns before "notes".
-qualifier          sbndaq_artdaq_core      sbncode           notes
+qualifier          sbndaq_artdaq_core      lardataobj           notes
 e19:s94:debug      e19:debug:s94           e19:debug    
 e19:s94:prof       e19:prof:s94            e19:prof     
 e19:s94:py2:debug  e19:debug:s94:py2       e19:debug:py2
